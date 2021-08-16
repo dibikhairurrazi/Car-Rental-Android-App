@@ -152,13 +152,13 @@ public class VehicleInfoActivity extends AppCompatActivity {
             notAvailable.setVisibility(ConstraintLayout.INVISIBLE);
             book.setEnabled(true);
             book.setBackground(ContextCompat.getDrawable(VehicleInfoActivity.this,R.drawable.round_button));
-            book.setText("Book This Car");
+            book.setText("Pinjam Mobil Ini");
         }else{
             available.setVisibility(ConstraintLayout.INVISIBLE);
             notAvailable.setVisibility(ConstraintLayout.VISIBLE);
             book.setEnabled(false);
             book.setBackground(ContextCompat.getDrawable(VehicleInfoActivity.this,R.drawable.disable_button));
-            book.setText("Vehicle Not Available");
+            book.setText("Kendaraan Tidak Tersedia");
         }
 
         //SET VEHICLE SPECS

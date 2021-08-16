@@ -1,14 +1,22 @@
 package com.example.carrentalapp.ActivityPages;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -156,7 +164,7 @@ public class BookingSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(!book.isEnabled()){
-                    toast("Payment must be done");
+                    toast("Harus selesaikan pembayaran terlebih dahulu");
                     return;
                 }
                 generateBilling_Payment();
@@ -169,13 +177,18 @@ public class BookingSummaryActivity extends AppCompatActivity {
         payNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String title="Pembayaran sukses";
+                String body="Pembayaran sudah kami terima, silahkan melanjutkan proses peminjaman";
+
+                showNotification(title, body);
+
                 paidLoading.setVisibility(View.VISIBLE);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         paidLoading.setVisibility(View.INVISIBLE);
-                        payNow.setText("Paid");
+                        payNow.setText("Dibayar");
                         payNow.setEnabled(false);
                         book.setEnabled(true);
                     }
@@ -265,6 +278,27 @@ public class BookingSummaryActivity extends AppCompatActivity {
     private void toast(String txt){
         Toast toast = Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    void showNotification(String title, String message) {
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID_01234",
+                    "NOTIFICATION_CHANNEL_NO_1234",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Desc");
+            mNotificationManager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID_01234")
+                .setSmallIcon(R.mipmap.ic_launcher) // notification icon
+                .setContentTitle(title) // title for notification
+                .setContentText(message)// message for notification
+                .setAutoCancel(true); // clear notification after click
+        Intent intent = new Intent(getApplicationContext(), UserViewActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pi);
+        mNotificationManager.notify(0, mBuilder.build());
     }
 
 }

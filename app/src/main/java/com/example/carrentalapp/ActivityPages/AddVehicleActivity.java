@@ -174,37 +174,37 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     private boolean isValid(String category, String seats, String price, String mileage, String manufacturer, String model, String year, String imageURL) {
         if(!vehicleCategoryDao.exits(category)){
-            toast(category + " Category does not exits");
+            toast(category + " Ketegori tidak ditemukan");
             return false;
         }
         else if(category.equals("")){
-            toast("Category is blank");
+            toast("Kategori tidak boleh kosong");
             return false;
         }
         else if(seats.equals("")){
-            toast("Seats is blank");
+            toast("Jumlah kursi tidak boleh kosong");
             return false;
         }
         else if(price.equals("")){
-            toast("Price is blank");
+            toast("Harga tidak boleh kosong");
             return false;
         }
         else if(mileage.equals("")){
-            toast("Mileage is blank");
+            toast("Total KM tidak boleh kosong");
             return false;
         }else if(manufacturer.equals("")){
-            toast("Manufacturer is blank");
+            toast("Pabrikan tidak boleh kosong");
             return false;
         }
         else if(model.equals("")){
-            toast("Model is blank");
+            toast("Model tidak boleh kosong");
             return false;
         }
         else if(year.equals("")){
-            toast("Year is blank");
+            toast("Tahun pembuatan tidak boleh kosong");
             return false;
         }else if(imageURL.equals("")){
-            toast("ImageURL is blank");
+            toast("ImageURL tidak boleh kosong");
         }
         return true;
     }

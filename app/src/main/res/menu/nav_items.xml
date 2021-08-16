@@ -4,13 +4,13 @@
     <item
         android:id="@+id/nav_vehicle"
         android:icon="@drawable/vehicle_icon"
-        android:title="Vehicle" />
+        android:title="Pinjam Baru" />
     <item
         android:id="@+id/nav_booking"
         android:icon="@drawable/book_icon"
-        android:title="Bookings" />
+        android:title="Daftar Peminjaman" />
     <item
         android:id="@+id/nav_account"
         android:icon="@drawable/profile_icon"
-        android:title="Account" />
+        android:title="Logout" />
 </menu>
