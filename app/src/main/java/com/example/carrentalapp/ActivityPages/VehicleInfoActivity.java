@@ -23,6 +23,8 @@ import com.example.carrentalapp.Model.Vehicle;
 import com.example.carrentalapp.R;
 import com.squareup.picasso.Picasso;
 
+import c.e.c.Util.Common;
+
 public class VehicleInfoActivity extends AppCompatActivity {
 
     //VEHICLE OBJECT
@@ -169,7 +171,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
         seats.setText(vehicle.getSeats()+"");
         type.setText(vehicle.getCategory());
 
-        vehiclePrice.setText("$" + vehicle.getPrice()+"/Day");
+        vehiclePrice.setText(Common.getFormattedPrice(vehicle.getPrice())+"/Hari");
 
     }
 

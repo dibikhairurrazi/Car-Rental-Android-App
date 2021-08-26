@@ -1,30 +1,23 @@
 package com.example.carrentalapp.ActivityPages;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.room.Room;
-
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.room.Room;
 
 import com.example.carrentalapp.Database.BillingDao;
 import com.example.carrentalapp.Database.BookingDao;
@@ -43,10 +36,12 @@ import com.example.carrentalapp.R;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Random;
+
+import c.e.c.Util.Common;
+import c.e.c.Util.SendMail;
 
 public class BookingSummaryActivity extends AppCompatActivity {
 
@@ -168,6 +163,19 @@ public class BookingSummaryActivity extends AppCompatActivity {
                     return;
                 }
                 generateBilling_Payment();
+
+                chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
+                vehicle = vehicleDao.findVehicle(booking.getVehicleID());
+
+                Customer customer = customerDao.findUser(booking.getCustomerID());
+
+                Log.d("SEND_MESSAGE", "start sending message");
+
+                SendMail sm = new SendMail(customer.getEmail(), "Booking Summary #" + booking.getBookingID(),  getEmailString(customer, vehicle, chosenInsurance));
+                sm.execute();
+
+                Log.d("SEND_MESSAGE", "finished sending message");
+
                 Intent bookingCompletePage = new Intent(BookingSummaryActivity.this,BookingCompleteActivity.class);
                 bookingCompletePage.putExtra("BOOKING",booking);
                 startActivity(bookingCompletePage);
@@ -177,7 +185,7 @@ public class BookingSummaryActivity extends AppCompatActivity {
         payNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title="Pembayaran sukses";
+                String title="Pesanan sudah kami terima";
                 String body="Pembayaran sudah kami terima, silahkan melanjutkan proses peminjaman";
 
                 showNotification(title, body);
@@ -237,30 +245,25 @@ public class BookingSummaryActivity extends AppCompatActivity {
     private void displaySummary(){
 
         vehicleName.setText(vehicle.fullTitle());
-        rate.setText("$"+vehicle.getPrice()+"/Day");
-        totalDays.setText(getDayDifference(booking.getPickupDate(),booking.getReturnDate())+" Days");
+        rate.setText(Common.getFormattedPrice(vehicle.getPrice())+"/Hari");
+        totalDays.setText(Common.getDayDifference(booking.getPickupDate(),booking.getReturnDate())+" Hari");
         _pickup.setText(booking.getPickupTime());
         _return.setText(booking.getReturnTime());
         pickupLocation.setText(booking.getBookingLocation());
 
         insurance.setText(chosenInsurance.getCoverageType());
-        insuranceRate.setText("$"+chosenInsurance.getCost());
+        insuranceRate.setText(Common.getFormattedPrice(chosenInsurance.getCost()));
 
         Picasso.get().load(vehicle.getVehicleImageURL()).into(vehicleImage);
     }
 
     private void displayTotalCost(){
         double cost = calculateTotalCost();
-        totalCost.setText("$"+cost);
-    }
-
-
-    private long getDayDifference(Calendar start, Calendar end){
-        return ChronoUnit.DAYS.between(start.toInstant(), end.toInstant())+2;
+        totalCost.setText(Common.getFormattedPrice(cost));
     }
 
     private double calculateTotalCost(){
-        long _days = getDayDifference(booking.getPickupDate(),booking.getReturnDate());
+        long _days = Common.getDayDifference(booking.getPickupDate(),booking.getReturnDate());
         double _vehicleRate = vehicle.getPrice();
         double _insuranceRate = chosenInsurance.getCost();
 
@@ -301,4 +304,204 @@ public class BookingSummaryActivity extends AppCompatActivity {
         mNotificationManager.notify(0, mBuilder.build());
     }
 
+    String getEmailString(Customer customer, Vehicle vehicle, Insurance chosenInsurance) {
+        return  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+                "<html>\n" +
+                "\n" +
+                "<head>\n" +
+                "    <title></title>\n" +
+                "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\n" +
+                "    <style type=\"text/css\">\n" +
+                "        body,\n" +
+                "        table,\n" +
+                "        td,\n" +
+                "        a {\n" +
+                "            -webkit-text-size-adjust: 100%;\n" +
+                "            -ms-text-size-adjust: 100%;\n" +
+                "        }\n" +
+                "\n" +
+                "        table,\n" +
+                "        td {\n" +
+                "            mso-table-lspace: 0pt;\n" +
+                "            mso-table-rspace: 0pt;\n" +
+                "        }\n" +
+                "\n" +
+                "        img {\n" +
+                "            -ms-interpolation-mode: bicubic;\n" +
+                "        }\n" +
+                "\n" +
+                "        img {\n" +
+                "            border: 0;\n" +
+                "            height: auto;\n" +
+                "            line-height: 100%;\n" +
+                "            outline: none;\n" +
+                "            text-decoration: none;\n" +
+                "        }\n" +
+                "\n" +
+                "        table {\n" +
+                "            border-collapse: collapse !important;\n" +
+                "        }\n" +
+                "\n" +
+                "        body {\n" +
+                "            height: 100% !important;\n" +
+                "            margin: 0 !important;\n" +
+                "            padding: 0 !important;\n" +
+                "            width: 100% !important;\n" +
+                "        }\n" +
+                "\n" +
+                "        a[x-apple-data-detectors] {\n" +
+                "            color: inherit !important;\n" +
+                "            text-decoration: none !important;\n" +
+                "            font-size: inherit !important;\n" +
+                "            font-family: inherit !important;\n" +
+                "            font-weight: inherit !important;\n" +
+                "            line-height: inherit !important;\n" +
+                "        }\n" +
+                "\n" +
+                "        @media screen and (max-width: 480px) {\n" +
+                "            .mobile-hide {\n" +
+                "                display: none !important;\n" +
+                "            }\n" +
+                "\n" +
+                "            .mobile-center {\n" +
+                "                text-align: center !important;\n" +
+                "            }\n" +
+                "        }\n" +
+                "\n" +
+                "        div[style*=\"margin: 16px 0;\"] {\n" +
+                "            margin: 0 !important;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "\n" +
+                "</head>\n" +
+                "<body style=\"margin: 0 !important; padding: 0 !important; background-color: #eeeeee;\" bgcolor=\"#eeeeee\">\n" +
+                "    <div style=\"display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Open Sans, Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;\">\n" +
+                "        \n" +
+                "    </div>\n" +
+                "    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "        <tr>\n" +
+                "            <td align=\"center\" style=\"background-color: #eeeeee;\" bgcolor=\"#eeeeee\">\n" +
+                "                <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:600px;\">\n" +
+                "                    <tr>\n" +
+                "                        <td align=\"center\" valign=\"top\" style=\"font-size:0; padding: 35px;\" bgcolor=\"#03a9f4\">\n" +
+                "                            <div style=\"display:inline-block; max-width:100%; min-width:100px; vertical-align:top; width:100%;\">\n" +
+                "                                <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:300px;\">\n" +
+                "                                    <tr>\n" +
+                "                                        <td align=\"left\" valign=\"top\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 36px; font-weight: 800; line-height: 48px;\" class=\"mobile-center\">\n" +
+                "                                            <h1 style=\"font-size: 36px; font-weight: 800; margin: 0; color: #ffffff;\">SewaSini</h1>\n" +
+                "                                        </td>\n" +
+                "                                    </tr>\n" +
+                "                                </table>\n" +
+                "                            </div>\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "                    <tr>\n" +
+                "                        <td align=\"center\" style=\"padding: 35px 35px 20px 35px; background-color: #ffffff;\" bgcolor=\"#ffffff\">\n" +
+                "                            <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:600px;\">\n" +
+                "                                <tr>\n" +
+                "                                    <td align=\"center\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;\"> <img src=\"https://img.icons8.com/carbon-copy/100/000000/checked-checkbox.png\" width=\"125\" height=\"120\" style=\"display: block; border: 0px;\" /><br>\n" +
+                "                                        <h2 style=\"font-size: 30px; font-weight: 800; line-height: 36px; color: #333333; margin: 0;\"> Pesanan anda sudah kami terima</h2>\n" +
+                "                                    </td>\n" +
+                "                                </tr>\n" +
+                "                                <tr>\n" +
+                "                                    <td align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 10px;\">\n" +
+                "                                        <p style=\"font-size: 16px; font-weight: 400; line-height: 24px; color: #777777;\"> Anda dapat melihat detail dari pesanan ada dibawah ini </p>\n" +
+                "                                    </td>\n" +
+                "                                </tr>\n" +
+                "                                <tr>\n" +
+                "                                    <td align=\"left\" style=\"padding-top: 20px;\">\n" +
+                "                                        <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\">\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" bgcolor=\"#eeeeee\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;\"> Booking Summary # </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" bgcolor=\"#eeeeee\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;\"> " + booking.getBookingID() +"</td>\n" +
+                "                                            </tr>\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> Pengemudi </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> " + customer.getFullName() + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> Email </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> " + customer.getEmail() + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> No. Telepon </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> " + customer.getPhoneNumber() + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                          <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> Tanggal Pengambilan </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> " + booking.getPickupTime() + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                          <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> Tanggal Pengembalian </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> " + booking.getReturnTime() + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                        </table>\n" +
+                "                                    </td>\n" +
+                "                                </tr>\n" +
+                "                              <tr>\n" +
+                "                                    <td align=\"left\" style=\"padding-top: 20px;\">\n" +
+                "                                        <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\">\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" bgcolor=\"#eeeeee\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;\"> Merk mobil </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" bgcolor=\"#eeeeee\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;\">" + vehicle.getModel() + "</td>\n" +
+                "                                            </tr>\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> Harga per-hari</td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> Rp" + vehicle.getPrice() + "</td>\n" +
+                "                                            </tr>\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> Jumlah hari </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> " + Common.getDayDifference(booking.getPickupDate(),booking.getReturnDate()) + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                             <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> Biaya Asuransi </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> Rp" + chosenInsurance.getCost() + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                        </table>\n" +
+                "                                    </td>\n" +
+                "                                </tr>\n" +
+                "                                <tr>\n" +
+                "                                    <td align=\"left\" style=\"padding-top: 20px;\">\n" +
+                "                                        <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\">\n" +
+                "                                            <tr>\n" +
+                "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;\"> TOTAL </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;\"> Rp" + calculateTotalCost() + " </td>\n" +
+                "                                            </tr>\n" +
+                "                                        </table>\n" +
+                "                                    </td>\n" +
+                "                                </tr>\n" +
+                "                            </table>\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "                    <tr>\n" +
+                "                        <td align=\"\" height=\"100%\" valign=\"top\" width=\"100%\" style=\"padding: 0 35px 35px 35px; background-color: #ffffff;\" bgcolor=\"#ffffff\">\n" +
+                "                            <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:660px;\">\n" +
+                "                                <tr>\n" +
+                "                                    <td align=\"center\" valign=\"top\" style=\"font-size:0;\">\n" +
+                "                                        <div style=\"display:inline-block; max-width:100%; min-width:240px; vertical-align:top; width:100%;\">\n" +
+                "                                            <table align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width:600px;\">\n" +
+                "                                                <tr>\n" +
+                "                                                    <td align=\"left\" valign=\"top\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;\">\n" +
+                "                                                        <p style=\"font-weight: 800;\">Lokasi Pengantaran</p>\n" +
+                "                                                        <p>" + booking.getBookingLocation() + "</p>\n" +
+                "                                                    </td>\n" +
+                "                                                </tr>\n" +
+                "                                            </table>\n" +
+                "                                        </div>\n" +
+                "                                        \n" +
+                "                                    </td>\n" +
+                "                                </tr>\n" +
+                "                            </table>\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "                </table>\n" +
+                "            </td>\n" +
+                "        </tr>\n" +
+                "    </table>\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>";
+    }
 }

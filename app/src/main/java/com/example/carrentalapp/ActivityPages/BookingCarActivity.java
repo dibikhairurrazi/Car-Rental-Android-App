@@ -94,8 +94,8 @@ public class BookingCarActivity extends AppCompatActivity implements OnMapReadyC
     String mrMs = "mr";
 
     //DATE FORMAT -> FOR DISPLAY PURPOSE
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM, d yyyy", Locale.ENGLISH);
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
 
     //DATE/TIME STORING
     //GOING BACK BUTTON and CONTINUE BOOKING BUTTON

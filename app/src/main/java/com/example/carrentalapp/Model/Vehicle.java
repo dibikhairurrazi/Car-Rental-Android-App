@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Entity
 public class Vehicle implements Serializable {
@@ -77,6 +79,11 @@ public class Vehicle implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+
+    public String getPriceString() {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+        return numberFormat.format(price);
     }
 
     public void setPrice(double price) {

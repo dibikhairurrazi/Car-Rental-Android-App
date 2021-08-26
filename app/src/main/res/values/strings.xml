@@ -8,7 +8,7 @@
     <string name="seats">Seats</string>
     <string name="image_url">Image URL</string>
     <string name="price">Harga</string>
-    <string name="mileage">Total Jarak Tempuh</string>
+    <string name="mileage">Jarak Tempuh</string>
     <string name="add">Tambah</string>
     <string name="manufacturer">Pabrikan</string>
     <string name="model">Model</string>
@@ -21,7 +21,7 @@
     <string name="todo">TODO</string>
     <string name="category_id">ID Kategori</string>
     <string name="select_color">Pilih Warna</string>
-    <string name="booking_complete">Booking Selesai</string>
+    <string name="booking_complete">Pesanan Diterima</string>
     <string name="booking_id_dummy">BookingID: 1234</string>
     <string name="email">Email:</string>
     <string name="rate">Tarif:</string>
@@ -98,7 +98,7 @@
     <string name="return_car">Mengembalikan</string>
     <string name="dummy_total_price">IDR 35900000</string>
     <string name="year_manufacturer_model">Tahun Produksi</string>
-    <string name="collision_damage_waiver">Collision Damage Waiver</string>
+    <string name="collision_damage_waiver">Proteksi Kerusakan</string>
     <string name="personal_accident_insurance">Asuransi Kecelakaan</string>
     <string name="supplemental_liability_protection">Proteksi Tambahan</string>
     <string name="not_available">Tidak Tersedia</string>
@@ -107,9 +107,9 @@
     <string name="vehicle_specs">Spesifikasi Kendaraan</string>
     <string name="book_this_car">Pinjam</string>
     <string name="basic">Basic</string>
-    <string name="dummy_gold_rate">$15</string>
-    <string name="dummy_basic_rate">$0</string>
-    <string name="dummy_platinum_rate">$25</string>
+    <string name="dummy_gold_rate">Rp 250.000</string>
+    <string name="dummy_basic_rate">Rp 0</string>
+    <string name="dummy_platinum_rate">Rp 400.000</string>
     <string name="premium">Premium</string>
 
     <string name="default_info_title">Default Location</string>

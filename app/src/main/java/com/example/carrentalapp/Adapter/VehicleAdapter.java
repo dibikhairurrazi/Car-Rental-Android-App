@@ -42,7 +42,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleH
     public void onBindViewHolder(@NonNull VehicleHolder vehicleHolder, int i) {
         Vehicle v = vehicle.get(i);
         vehicleHolder.vehicle.setText(v.getYear() + " " + v.getManufacturer() + " " + v.getModel());
-        vehicleHolder.price.setText("$"+v.getPrice()+"/day");
+        vehicleHolder.price.setText(v.getPriceString()+"/hari");
         Picasso.get().load(v.getVehicleImageURL()).into(vehicleHolder.imageView);
     }
 

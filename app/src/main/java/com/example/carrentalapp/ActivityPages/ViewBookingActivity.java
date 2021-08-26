@@ -23,6 +23,8 @@ import com.example.carrentalapp.R;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
+import c.e.c.Util.Common;
+
 public class ViewBookingActivity extends AppCompatActivity {
 
     private Button back, returnCar;
@@ -125,33 +127,27 @@ public class ViewBookingActivity extends AppCompatActivity {
     private void displaySummary(){
 
         vehicleName.setText(vehicle.fullTitle());
-        rate.setText("$"+vehicle.getPrice()+"/Day");
-        totalDays.setText(getDayDifference(booking.getPickupDate(),booking.getReturnDate())+" Days");
+        rate.setText("Rp "+vehicle.getPrice()+"/Day");
+        totalDays.setText(Common.getDayDifference(booking.getPickupDate(),booking.getReturnDate())+" Days");
         _pickup.setText(booking.getPickupTime());
         _return.setText(booking.getReturnTime());
 
         insurance.setText(chosenInsurance.getCoverageType());
-        insuranceRate.setText("$"+chosenInsurance.getCost());
+        insuranceRate.setText(Common.getFormattedPrice(chosenInsurance.getCost()));
     }
 
     private void displayTotalCost(){
         double cost = calculateTotalCost();
-        totalCost.setText("$"+cost);
-    }
-
-
-    private long getDayDifference(Calendar start, Calendar end){
-        return ChronoUnit.DAYS.between(start.toInstant(), end.toInstant())+2;
+        totalCost.setText(Common.getFormattedPrice(cost));
     }
 
     private double calculateTotalCost(){
-        long _days = getDayDifference(booking.getPickupDate(),booking.getReturnDate());
+        long _days = Common.getDayDifference(booking.getPickupDate(),booking.getReturnDate());
         double _vehicleRate = vehicle.getPrice();
         double _insuranceRate = chosenInsurance.getCost();
 
         return (_days*_vehicleRate) + _insuranceRate;
     }
-
 
     public void onBackPressed(){
         super.onBackPressed();

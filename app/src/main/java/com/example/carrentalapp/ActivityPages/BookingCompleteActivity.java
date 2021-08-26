@@ -7,15 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.carrentalapp.Database.BillingDao;
-import com.example.carrentalapp.Database.BookingDao;
 import com.example.carrentalapp.Database.CustomerDao;
 import com.example.carrentalapp.Database.InsuranceDao;
-import com.example.carrentalapp.Database.PaymentDao;
 import com.example.carrentalapp.Database.Project_Database;
 import com.example.carrentalapp.Database.VehicleDao;
 import com.example.carrentalapp.Model.Booking;
@@ -23,7 +18,6 @@ import com.example.carrentalapp.Model.Customer;
 import com.example.carrentalapp.Model.Insurance;
 import com.example.carrentalapp.Model.Vehicle;
 import com.example.carrentalapp.R;
-import com.squareup.picasso.Picasso;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -101,6 +95,13 @@ public class BookingCompleteActivity extends AppCompatActivity {
         chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
         vehicle = vehicleDao.findVehicle(booking.getVehicleID());
 
+        Customer customer = customerDao.findUser(booking.getCustomerID());
+
+        // SendMail sm = new SendMail(customer.getEmail(), "Booking Summary #" + booking.getBookingID(),  getEmailString(customer, vehicle, chosenInsurance));
+        // sm.execute();
+
+        // sendEmail(to, "Booking Summary #" + booking.getBookingID(), getEmailString(customer, vehicle, chosenInsurance));
+
         bookingID = findViewById(R.id.bookingID);
     }
 
@@ -128,18 +129,18 @@ public class BookingCompleteActivity extends AppCompatActivity {
     private void displaySummary(){
 
         vehicleName.setText(vehicle.fullTitle());
-        rate.setText("$"+vehicle.getPrice()+"/Day");
+        rate.setText("Rp "+vehicle.getPrice()+"/Day");
         totalDays.setText(getDayDifference(booking.getPickupDate(),booking.getReturnDate())+" Days");
         _pickup.setText(booking.getPickupTime());
         _return.setText(booking.getReturnTime());
 
         insurance.setText(chosenInsurance.getCoverageType());
-        insuranceRate.setText("$"+chosenInsurance.getCost());
+        insuranceRate.setText("Rp "+chosenInsurance.getCost());
     }
 
     private void displayTotalCost(){
         double cost = calculateTotalCost();
-        totalCost.setText("$"+cost);
+        totalCost.setText("Rp "+cost);
     }
 
 
@@ -155,7 +156,6 @@ public class BookingCompleteActivity extends AppCompatActivity {
         return (_days*_vehicleRate) + _insuranceRate;
     }
 
-
     public void onBackPressed(){
         super.onBackPressed();
         Intent homepage = new Intent(getApplicationContext(), UserViewActivity.class);
@@ -163,3 +163,4 @@ public class BookingCompleteActivity extends AppCompatActivity {
         startActivity(homepage);
     }
 }
+

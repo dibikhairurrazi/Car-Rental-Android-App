@@ -48,6 +48,9 @@ dependencies {
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
+    implementation 'com.sun.mail:android-mail:1.6.0'
+    // implementation 'javax.mail:javax.mail-api:1.5.3'
+
     debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
 }
 
