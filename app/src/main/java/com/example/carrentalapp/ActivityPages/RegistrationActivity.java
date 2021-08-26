@@ -20,7 +20,7 @@ import com.example.carrentalapp.R;
 
 import java.util.Random;
 
-import c.e.c.Utiil.SimpleSHA1;
+import c.e.c.Util.SimpleSHA1;
 
 
 public class RegistrationActivity extends AppCompatActivity{

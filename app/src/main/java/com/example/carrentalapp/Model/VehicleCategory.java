@@ -3,6 +3,8 @@ package com.example.carrentalapp.Model;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Query;
+
 @Entity
 public class VehicleCategory {
 
@@ -68,7 +70,8 @@ public class VehicleCategory {
         return capitalize(category);
     }
 
-    public int getQuantity() {
+    @Query("SELECT Count(*) FROM Vehicle")
+    public int getQuantity(){
         return quantity;
     }
 

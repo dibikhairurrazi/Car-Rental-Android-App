@@ -1,4 +1,4 @@
-package c.e.c.Utiil;
+package c.e.c.Util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

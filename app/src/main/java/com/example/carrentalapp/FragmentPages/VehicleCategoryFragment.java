@@ -108,7 +108,7 @@ public class VehicleCategoryFragment extends Fragment implements VehicleCategory
 
     @Override
     public void onSelectClick(int position) {
-        toast(list.get(position).getCategory() + " Select");
+        toast(list.get(position).getCategory() + " Pilih");
     }
 
 }

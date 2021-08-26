@@ -25,7 +25,7 @@ import com.example.carrentalapp.Model.VehicleCategory;
 import com.example.carrentalapp.R;
 import com.example.carrentalapp.Session.Session;
 
-import c.e.c.Utiil.SimpleSHA1;
+import c.e.c.Util.SimpleSHA1;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -190,15 +190,15 @@ public class LoginActivity extends AppCompatActivity {
                 vehicleCategoryDao.insert(vc5);
 
 
-                Vehicle v1 = new Vehicle(273,65.5,5,6497,"nissan","altima",2020,"sedan",true,"https://65e81151f52e248c552b-fe74cd567ea2f1228f846834bd67571e.ssl.cf1.rackcdn.com/ldm-images/2020-Nissan-Altima-Color-Super-Black.png");
-                Vehicle v2 = new Vehicle(285,54.8,5,4578,"toyota","avalon",2020,"sedan",true,"https://img.sm360.ca/ir/w640h390c/images/newcar/ca/2020/toyota/avalon/limited/sedan/main/2020_toyota_avalon_LTD_Main.png");
-                Vehicle v3 = new Vehicle(287,50.99,5,1379,"subaru","wrx",2020,"sedan",true,"https://img.sm360.ca/ir/w640h390c/images/newcar/ca/2020/subaru/wrx/base-wrx/sedan/exteriorColors/12750_cc0640_001_d4s.png");
+                Vehicle v1 = new Vehicle(273,950000,5,6497,"nissan","altima",2020,"sedan",true,"https://65e81151f52e248c552b-fe74cd567ea2f1228f846834bd67571e.ssl.cf1.rackcdn.com/ldm-images/2020-Nissan-Altima-Color-Super-Black.png");
+                Vehicle v2 = new Vehicle(285,850000,5,4578,"toyota","avalon",2020,"sedan",true,"https://img.sm360.ca/ir/w640h390c/images/newcar/ca/2020/toyota/avalon/limited/sedan/main/2020_toyota_avalon_LTD_Main.png");
+                Vehicle v3 = new Vehicle(287,750000,5,1379,"subaru","wrx",2020,"sedan",true,"https://img.sm360.ca/ir/w640h390c/images/newcar/ca/2020/subaru/wrx/base-wrx/sedan/exteriorColors/12750_cc0640_001_d4s.png");
 
-                Vehicle v4 = new Vehicle(265,58.89,5,6490,"kia","telluride",2020,"suv",true,"https://www.cstatic-images.com/car-pictures/xl/usd00kis061c021003.png");
-                Vehicle v5 = new Vehicle(229,86.5,5,4970,"lincoln","aviator",2020,"suv",true,"https://www.cstatic-images.com/car-pictures/xl/usd00lis021b021003.png");
-                Vehicle v6 = new Vehicle(219,95.0,5,595,"ford","explorer",2020,"suv",true,"https://www.cstatic-images.com/car-pictures/xl/usd00fos102d021003.png");
+                Vehicle v4 = new Vehicle(265,800000,5,6490,"kia","telluride",2020,"suv",true,"https://www.cstatic-images.com/car-pictures/xl/usd00kis061c021003.png");
+                Vehicle v5 = new Vehicle(229,900000,5,4970,"lincoln","aviator",2020,"suv",true,"https://www.cstatic-images.com/car-pictures/xl/usd00lis021b021003.png");
+                Vehicle v6 = new Vehicle(219,1000000,5,595,"ford","explorer",2020,"suv",true,"https://www.cstatic-images.com/car-pictures/xl/usd00fos102d021003.png");
 
-                Vehicle v7 = new Vehicle(297,56.0,2,200,"chevrolet","camaro",2020,"coupe",false,"https://www.cstatic-images.com/car-pictures/xl/usc90chc022b021003.png");
+                Vehicle v7 = new Vehicle(297,700000,2,200,"chevrolet","camaro",2020,"coupe",false,"https://www.cstatic-images.com/car-pictures/xl/usc90chc022b021003.png");
 
                 vehicleDao.insert(v1);
                 vehicleDao.insert(v2);
@@ -209,8 +209,8 @@ public class LoginActivity extends AppCompatActivity {
                 vehicleDao.insert(v7);
 
                 Insurance i1 = new Insurance("None",0);
-                Insurance i2 = new Insurance("Basic",15);
-                Insurance i3 = new Insurance("Premium",25);
+                Insurance i2 = new Insurance("Basic",250000);
+                Insurance i3 = new Insurance("Premium",400000);
                 insuranceDao.insert(i1);
                 insuranceDao.insert(i2);
                 insuranceDao.insert(i3);

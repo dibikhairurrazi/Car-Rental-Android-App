@@ -94,8 +94,8 @@ public class BookingCarActivity extends AppCompatActivity implements OnMapReadyC
     String mrMs = "mr";
 
     //DATE FORMAT -> FOR DISPLAY PURPOSE
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM, d yyyy", Locale.ENGLISH);
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
 
     //DATE/TIME STORING
     //GOING BACK BUTTON and CONTINUE BOOKING BUTTON
@@ -284,7 +284,7 @@ public class BookingCarActivity extends AppCompatActivity implements OnMapReadyC
 
         //ENSURE THAT ALL FIELDS ARE NOT EMPTY
         if(!fieldCheck(_firstName,_lastName,_email,_phoneNumber)) {
-            toast("Incomplete Form");
+            toast("Form Tidak Lengkap");
             return;
         }
 
@@ -293,7 +293,7 @@ public class BookingCarActivity extends AppCompatActivity implements OnMapReadyC
 
         //IF CUSTOMER NOT FOUND DO NOTHING
         if(customer == null){
-            toast("Customer Do Not Exist");
+            toast("User Tidak Ditemukan");
             return;
         }
 

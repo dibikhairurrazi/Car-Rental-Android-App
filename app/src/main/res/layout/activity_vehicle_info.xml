@@ -70,7 +70,7 @@
                     android:padding="15dp"
                     android:text="@string/dummy_rate"
                     android:textColor="@color/colorSecondary"
-                    android:textSize="24sp"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="@+id/vehicleSpecCard"
                     app:layout_constraintTop_toBottomOf="@+id/vehicleImage" />
 
