@@ -19,6 +19,8 @@ import com.example.carrentalapp.Model.Insurance;
 import com.example.carrentalapp.Model.Vehicle;
 import com.example.carrentalapp.R;
 
+import org.apache.commons.text.WordUtils;
+
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
@@ -119,7 +121,7 @@ public class BookingCompleteActivity extends AppCompatActivity {
     private void displayCustomerInformation() {
         Customer customer = customerDao.findUser(booking.getCustomerID());
         //DISPLAY DRIVER INFO
-        name.setText(customer.getFullName());
+        name.setText(WordUtils.capitalize(customer.getFullName()));
         email.setText(customer.getEmail());
         phoneNumber.setText(customer.getPhoneNumber());
 
