@@ -43,6 +43,8 @@ import java.util.Random;
 import c.e.c.Util.Common;
 import c.e.c.Util.SendMail;
 
+import org.apache.commons.text.WordUtils;
+
 public class BookingSummaryActivity extends AppCompatActivity {
 
     private Button back, book, payNow;
@@ -237,7 +239,7 @@ public class BookingSummaryActivity extends AppCompatActivity {
     private void displayCustomerInformation() {
         Customer customer = customerDao.findUser(booking.getCustomerID());
         //DISPLAY DRIVER INFO
-        name.setText(customer.getFullName());
+        name.setText(WordUtils.capitalize(customer.getFullName()));
         email.setText(customer.getEmail());
         phoneNumber.setText(customer.getPhoneNumber());
     }

@@ -127,9 +127,9 @@ public class RegistrationActivity extends AppCompatActivity{
     //Create the customer object from the form
     private Customer createCustomerObject(){
 
-        String firstName = ((EditText)findViewById(R.id.firstName)).getText().toString();
-        String middleName = ((EditText)findViewById(R.id.middleName)).getText().toString();
-        String lastName = ((EditText)findViewById(R.id.lastName)).getText().toString();
+        String firstName = ((EditText)findViewById(R.id.firstName)).getText().toString().toLowerCase();
+        String middleName = ((EditText)findViewById(R.id.middleName)).getText().toString().toLowerCase();
+        String lastName = ((EditText)findViewById(R.id.lastName)).getText().toString().toLowerCase();
 
         String email = ((EditText)findViewById(R.id.email)).getText().toString();
 

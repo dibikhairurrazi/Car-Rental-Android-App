@@ -52,6 +52,8 @@ dependencies {
     // implementation 'javax.mail:javax.mail-api:1.5.3'
 
     debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+
+    implementation 'org.apache.commons:commons-text:1.7'
 }
 
 secrets {
