@@ -421,7 +421,7 @@ public class BookingSummaryActivity extends AppCompatActivity {
                 "                                            </tr>\n" +
                 "                                            <tr>\n" +
                 "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> Pengemudi </td>\n" +
-                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> " + customer.getFullName() + " </td>\n" +
+                "                                                <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\"> " + WordUtils.capitalize(customer.getFullName()) + " </td>\n" +
                 "                                            </tr>\n" +
                 "                                            <tr>\n" +
                 "                                                <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;\"> Email </td>\n" +
