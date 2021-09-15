@@ -120,4 +120,6 @@
     <string name="channel_description">channel for notiification</string>
     <string name="pilih">Pilih</string>
     <string name="kategori_kendaraan">Kategori Kendaraan</string>
+    <string name="daftar_peminjaman">Daftar Peminjaman</string>
+    <string name="akun">Akun</string>
 </resources>

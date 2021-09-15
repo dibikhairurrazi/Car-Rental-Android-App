@@ -104,25 +104,33 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomerDao customerDao = db.customerDao();
-
-                String pw = "";
-                try {
-                    pw = SimpleSHA1.SHA1(password.getText().toString());
-                } catch (Exception e) {
-
-                }
-                Customer check = customerDao.findUser(email.getText().toString(),pw);
-
-                if(check != null){
-                    Session.save(LoginActivity.this,"customerID",check.getCustomerID()+"");
+                if ((email.getText().toString().equals("admin")) && (password.getText().toString().equals("admin"))) {
+                    Session.save(LoginActivity.this,"customerID","0");
                     Session.save(LoginActivity.this,"isLoggedIn","true");
-
-                    Intent homePage = new Intent(LoginActivity.this,UserViewActivity.class);
+                    Intent homePage = new Intent(LoginActivity.this,AdminViewActivity.class);
                     homePage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(homePage);
-                }else{
-                    toast("Unsuccessful");
+                } else {
+                    CustomerDao customerDao = db.customerDao();
+
+                    String pw = "";
+                    try {
+                        pw = SimpleSHA1.SHA1(password.getText().toString());
+                    } catch (Exception e) {
+
+                    }
+                    Customer check = customerDao.findUser(email.getText().toString(),pw);
+
+                    if(check != null){
+                        Session.save(LoginActivity.this,"customerID",check.getCustomerID()+"");
+                        Session.save(LoginActivity.this,"isLoggedIn","true");
+
+                        Intent homePage = new Intent(LoginActivity.this,UserViewActivity.class);
+                        homePage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(homePage);
+                    }else{
+                        toast("Unsuccessful");
+                    }
                 }
             }
         });

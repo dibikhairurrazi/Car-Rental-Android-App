@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_booking"
+        android:icon="@drawable/book_icon"
+        android:title="@string/daftar_peminjaman" />
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@drawable/profile_icon"
+        android:title="@string/akun" />
+</menu>
