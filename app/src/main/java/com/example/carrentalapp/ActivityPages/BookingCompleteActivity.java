@@ -1,13 +1,13 @@
 package com.example.carrentalapp.ActivityPages;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.example.carrentalapp.Database.CustomerDao;
 import com.example.carrentalapp.Database.InsuranceDao;
@@ -36,8 +36,6 @@ public class BookingCompleteActivity extends AppCompatActivity {
 
     //DATABASE TABLE
     private CustomerDao customerDao;
-    private VehicleDao vehicleDao;
-    private InsuranceDao insuranceDao;
 
     //BOOKING
     private Booking booking;
@@ -85,10 +83,10 @@ public class BookingCompleteActivity extends AppCompatActivity {
         customerDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .customerDao();
-        vehicleDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+        VehicleDao vehicleDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .vehicleDao();
-        insuranceDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+        InsuranceDao insuranceDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .insuranceDao();
 
@@ -97,27 +95,18 @@ public class BookingCompleteActivity extends AppCompatActivity {
         chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
         vehicle = vehicleDao.findVehicle(booking.getVehicleID());
 
-        Customer customer = customerDao.findUser(booking.getCustomerID());
-
-        // SendMail sm = new SendMail(customer.getEmail(), "Booking Summary #" + booking.getBookingID(),  getEmailString(customer, vehicle, chosenInsurance));
-        // sm.execute();
-
-        // sendEmail(to, "Booking Summary #" + booking.getBookingID(), getEmailString(customer, vehicle, chosenInsurance));
-
         bookingID = findViewById(R.id.bookingID);
     }
 
     private void listenHandler() {
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent homePage = new Intent(BookingCompleteActivity.this,UserViewActivity.class);
-                startActivity(homePage);
+        back.setOnClickListener(v -> {
+            Intent homePage = new Intent(BookingCompleteActivity.this,UserViewActivity.class);
+            startActivity(homePage);
 //                finish();
-            }
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayCustomerInformation() {
         Customer customer = customerDao.findUser(booking.getCustomerID());
         //DISPLAY DRIVER INFO
@@ -125,9 +114,10 @@ public class BookingCompleteActivity extends AppCompatActivity {
         email.setText(customer.getEmail());
         phoneNumber.setText(customer.getPhoneNumber());
 
-        bookingID.setText("BookingID: " + booking.getBookingID());
+        bookingID.setText(getString(R.string.booking_id_label) + booking.getBookingID());
     }
 
+    @SuppressLint("SetTextI18n")
     private void displaySummary(){
 
         vehicleName.setText(vehicle.fullTitle());
@@ -140,6 +130,7 @@ public class BookingCompleteActivity extends AppCompatActivity {
         insuranceRate.setText("Rp "+chosenInsurance.getCost());
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayTotalCost(){
         double cost = calculateTotalCost();
         totalCost.setText("Rp "+cost);

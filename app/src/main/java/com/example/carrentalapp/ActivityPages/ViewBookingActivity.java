@@ -1,13 +1,13 @@
 package com.example.carrentalapp.ActivityPages;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.example.carrentalapp.Database.BookingDao;
 import com.example.carrentalapp.Database.CustomerDao;
@@ -19,9 +19,6 @@ import com.example.carrentalapp.Model.Customer;
 import com.example.carrentalapp.Model.Insurance;
 import com.example.carrentalapp.Model.Vehicle;
 import com.example.carrentalapp.R;
-
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 
 import c.e.c.Util.Common;
 
@@ -35,11 +32,7 @@ public class ViewBookingActivity extends AppCompatActivity {
     //BOOKING SUMMARY
     private TextView bookingID, vehicleName, rate, totalDays, _pickup, _return, insurance, insuranceRate, totalCost;
 
-    //DATABASE TABLE
-    private BookingDao bookingDao;
     private CustomerDao customerDao;
-    private VehicleDao vehicleDao;
-    private InsuranceDao insuranceDao;
 
     //BOOKING
     private Booking booking;
@@ -62,6 +55,7 @@ public class ViewBookingActivity extends AppCompatActivity {
 
     private void initComponents() {
         back = findViewById(R.id.back);
+        returnCar = findViewById(R.id.returnCar);
 
         //DRIVER DETAILS
         name = findViewById(R.id.name);
@@ -83,21 +77,22 @@ public class ViewBookingActivity extends AppCompatActivity {
         totalCost = findViewById(R.id.totalCost);
 
         //DATABASE TABLE
-        bookingDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
-                    .build()
-                    .bookingDao();
+        //DATABASE TABLE
+        BookingDao bookingDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+                .build()
+                .bookingDao();
         customerDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .customerDao();
-        vehicleDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+        VehicleDao vehicleDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .vehicleDao();
-        insuranceDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+        InsuranceDao insuranceDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .insuranceDao();
 
         //GET BOOKING OBJECT WHICH WAS PASSED FROM PREVIOUS PAGE
-        int _bookingID = Integer.valueOf(getIntent().getStringExtra("BOOKINGID"));
+        int _bookingID = Integer.parseInt(getIntent().getStringExtra("BOOKINGID"));
         booking = bookingDao.findBooking(_bookingID);
         chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
         vehicle = vehicleDao.findVehicle(booking.getVehicleID());
@@ -106,14 +101,12 @@ public class ViewBookingActivity extends AppCompatActivity {
     }
 
     private void listenHandler() {
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back.setOnClickListener(v -> finish());
+
+        returnCar.setOnClickListener(view -> finish());
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayCustomerInformation() {
         Customer customer = customerDao.findUser(booking.getCustomerID());
         //DISPLAY DRIVER INFO
@@ -124,6 +117,7 @@ public class ViewBookingActivity extends AppCompatActivity {
         bookingID.setText("BookingID: " + booking.getBookingID());
     }
 
+    @SuppressLint("SetTextI18n")
     private void displaySummary(){
 
         vehicleName.setText(vehicle.fullTitle());

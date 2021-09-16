@@ -15,7 +15,7 @@ public class Billing {
     private String billingStatus;
     private Calendar billingDate;
 
-    private double latefees;
+    private double lateFees;
 
     @ForeignKey(entity = Payment.class,
                 parentColumns = "parentClassColumn",
@@ -24,11 +24,11 @@ public class Billing {
     private int paymentID;
 
 
-    public Billing(int billingID, String billingStatus, Calendar billingDate, double latefees, int paymentID) {
+    public Billing(int billingID, String billingStatus, Calendar billingDate, double lateFees, int paymentID) {
         this.billingID = billingID;
         this.billingStatus = billingStatus;
         this.billingDate = billingDate;
-        this.latefees = latefees;
+        this.lateFees = lateFees;
         this.paymentID = paymentID;
     }
 
@@ -56,12 +56,12 @@ public class Billing {
         this.billingDate = billingDate;
     }
 
-    public double getLatefees() {
-        return latefees;
+    public double getLateFees() {
+        return lateFees;
     }
 
-    public void setLatefees(double latefees) {
-        this.latefees = latefees;
+    public void setLateFees(double lateFees) {
+        this.lateFees = lateFees;
     }
 
     public int getPaymentID() {

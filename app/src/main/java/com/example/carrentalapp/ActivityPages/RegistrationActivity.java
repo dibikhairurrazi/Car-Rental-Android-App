@@ -2,20 +2,18 @@ package com.example.carrentalapp.ActivityPages;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import com.example.carrentalapp.Database.CustomerDao;
 import com.example.carrentalapp.Database.Project_Database;
-import com.example.carrentalapp.Model.*;
+import com.example.carrentalapp.Model.Customer;
 import com.example.carrentalapp.R;
 
 import java.util.Random;
@@ -66,44 +64,28 @@ public class RegistrationActivity extends AppCompatActivity{
     private void clickListenHandler(){
 
         //Expiry Date Listener
-        expiryDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCalendar(expiryDate);
-            }
-        });
+        expiryDate.setOnClickListener(v -> openCalendar(expiryDate));
 
         //Date of Birth Listener
-        dob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCalendar(dob);
-            }
-        });
+        dob.setOnClickListener(v -> openCalendar(dob));
 
         //Login Listener
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerPage = new Intent(RegistrationActivity.this,LoginActivity.class);
-                startActivity(registerPage);
-            }
+        login.setOnClickListener(v -> {
+            Intent registerPage = new Intent(RegistrationActivity.this,LoginActivity.class);
+            startActivity(registerPage);
         });
 
         //Register Listener
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Customer customer = createCustomerObject();
+        register.setOnClickListener(v -> {
+            Customer customer = createCustomerObject();
 
-                if(customerDao != null) {
-                    //If customer object is null -> Incomplete form
-                    //If customer object not null -> Complete form
-                    if(customer != null) {
-                        customerDao.insert(customer); //Insert the customer object into database
-                        toast("Registration Successful");
-                        finish();
-                    }
+            if(customerDao != null) {
+                //If customer object is null -> Incomplete form
+                //If customer object not null -> Complete form
+                if(customer != null) {
+                    customerDao.insert(customer); //Insert the customer object into database
+                    toast("Registration Successful");
+                    finish();
                 }
             }
         });
@@ -113,12 +95,9 @@ public class RegistrationActivity extends AppCompatActivity{
     private void openCalendar(final TextView dateFieldButton) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
 
-        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = year + "-" + month + "-" + dayOfMonth;
-                dateFieldButton.setText(date);
-            }
+        datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            String date = year + "-" + month + "-" + dayOfMonth;
+            dateFieldButton.setText(date);
         });
 
         datePickerDialog.show();
@@ -196,8 +175,7 @@ public class RegistrationActivity extends AppCompatActivity{
 
     private int generateID(){
         Random rnd = new Random();
-        int id = 202000 + rnd.nextInt(65)+10;
-        return id;
+        return 202000 + rnd.nextInt(65)+10;
     }
 
 

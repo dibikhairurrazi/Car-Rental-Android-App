@@ -30,13 +30,7 @@ import java.util.ArrayList;
  */
 public class BookingFragment extends Fragment implements BookingAdapter.onBookingListener{
 
-    private RecyclerView recyclerView;
     private ArrayList<Booking> bookings;
-    private BookingAdapter bookingAdapter;
-
-    private BookingDao bookingDao;
-
-    private int customerID;
 
     public BookingFragment() {
         // Required empty public constructor
@@ -52,18 +46,18 @@ public class BookingFragment extends Fragment implements BookingAdapter.onBookin
     }
 
     private void initComponents(View view) {
-        bookingDao = Room.databaseBuilder(getContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
-                    .build()
-                    .bookingDao();
+        BookingDao bookingDao = Room.databaseBuilder(getContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+                .build()
+                .bookingDao();
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        customerID = Integer.valueOf(Session.read(getContext(),"customerID","-1"));
+        int customerID = Integer.parseInt(Session.read(getContext(), "customerID", "-1"));
 
         bookings = (ArrayList<Booking>) bookingDao.getAllCustomerBookings(customerID);
-        bookingAdapter = new BookingAdapter(getContext(),bookings,this);
+        BookingAdapter bookingAdapter = new BookingAdapter(getContext(), bookings, this);
         recyclerView.setAdapter(bookingAdapter);
     }
 
@@ -73,11 +67,5 @@ public class BookingFragment extends Fragment implements BookingAdapter.onBookin
         Intent viewBooking = new Intent(getContext(), ViewBookingActivity.class);
         viewBooking.putExtra("BOOKINGID",""+bookingID);
         startActivity(viewBooking);
-    }
-
-    //DEBUGING
-    private void toast(String txt){
-        Toast toast = Toast.makeText(getContext(),txt,Toast.LENGTH_SHORT);
-        toast.show();
     }
 }

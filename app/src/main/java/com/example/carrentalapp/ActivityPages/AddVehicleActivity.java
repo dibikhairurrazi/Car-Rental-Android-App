@@ -6,7 +6,6 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -84,52 +83,37 @@ public class AddVehicleActivity extends AppCompatActivity {
     }
 
     private void listenHandler(){
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Vehicle vehicle = createVehicle();
+        add.setOnClickListener(v -> {
+            Vehicle vehicle = createVehicle();
 
-                if(vehicle != null){
-                    vehicleDao.insert(vehicle);
-                    vehicleCategoryDao.updateQuantity(category.getText().toString());
-                    Log.d("MainActivity",vehicle.getObject());
-                    toast("Vehicle Added");
-                }
+            if(vehicle != null){
+                vehicleDao.insert(vehicle);
+                vehicleCategoryDao.updateQuantity(category.getText().toString());
+                Log.d("MainActivity",vehicle.getObject());
+                toast("Vehicle Added");
             }
         });
 
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vehicleCategoryDao.deleteAll();
-                vehicleDao.deleteAll();
-                toast("RESET");
-            }
+        reset.setOnClickListener(v -> {
+            vehicleCategoryDao.deleteAll();
+            vehicleDao.deleteAll();
+            toast("RESET");
         });
 
-        vehicleCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addVehicleCategoryPage = new Intent(AddVehicleActivity.this,AddVehicleCategoryActivity.class);
-                startActivity(addVehicleCategoryPage);
-            }
+        vehicleCategory.setOnClickListener(v -> {
+            Intent addVehicleCategoryPage = new Intent(AddVehicleActivity.this,AddVehicleCategoryActivity.class);
+            startActivity(addVehicleCategoryPage);
         });
 
-        viewResult.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toast("View Result");
-                Intent viewResult = new Intent(AddVehicleActivity.this,UserViewActivity.class);
-                startActivity(viewResult);
-            }
+        viewResult.setOnClickListener(v -> {
+            toast("View Result");
+            Intent viewResult = new Intent(AddVehicleActivity.this,UserViewActivity.class);
+            startActivity(viewResult);
         });
 
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!imageURL.getText().toString().equals("")){
-                    Picasso.get().load(imageURL.getText().toString()).into(vehicleImage);
-                }
+        load.setOnClickListener(v -> {
+            if(!imageURL.getText().toString().equals("")){
+                Picasso.get().load(imageURL.getText().toString()).into(vehicleImage);
             }
         });
     }
@@ -147,26 +131,14 @@ public class AddVehicleActivity extends AppCompatActivity {
 
         boolean valid = isValid(_category,_seats,_price,_mileage,_manufacturer,_model,_year,_imageURL);
 
-        int vehicleID = generateID(200,300);
+        int vehicleID = generateID();
 
         while(vehicleDao.exists(vehicleID)){
-            vehicleID = generateID(200,300);
+            vehicleID = generateID();
         }
 
         if(valid){
-            Vehicle vehicle = new Vehicle(
-                                    vehicleID,
-                                    Double.valueOf(_price),
-                                    Integer.valueOf(_seats),
-                                    Integer.valueOf(_mileage),
-                                    _manufacturer,
-                                    _model,
-                                    Integer.valueOf(_year),
-                                    _category,
-                                    _availability,
-                                    _imageURL
-                                );
-            return vehicle;
+            return new Vehicle(vehicleID, Double.parseDouble(_price), Integer.parseInt(_seats), Integer.parseInt(_mileage), _manufacturer, _model, Integer.parseInt(_year), _category, _availability, _imageURL);
         }
 
         return null;
@@ -174,50 +146,49 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     private boolean isValid(String category, String seats, String price, String mileage, String manufacturer, String model, String year, String imageURL) {
         if(!vehicleCategoryDao.exits(category)){
-            toast(category + " Ketegori tidak ditemukan");
+            toast(category + getString(R.string.category_not_found));
             return false;
         }
         else if(category.equals("")){
-            toast("Kategori tidak boleh kosong");
+            toast(getString(R.string.category_cannot_be_empty));
             return false;
         }
         else if(seats.equals("")){
-            toast("Jumlah kursi tidak boleh kosong");
+            toast(getString(R.string.seat_cannot_be_empty));
             return false;
         }
         else if(price.equals("")){
-            toast("Harga tidak boleh kosong");
+            toast(getString(R.string.price_cannot_be_empty));
             return false;
         }
         else if(mileage.equals("")){
-            toast("Total KM tidak boleh kosong");
+            toast(getString(R.string.mileage_cannot_be_empty));
             return false;
         }else if(manufacturer.equals("")){
-            toast("Pabrikan tidak boleh kosong");
+            toast(getString(R.string.manufacturer_cannot_be_empty));
             return false;
         }
         else if(model.equals("")){
-            toast("Model tidak boleh kosong");
+            toast(getString(R.string.model_cannot_be_empty));
             return false;
         }
         else if(year.equals("")){
-            toast("Tahun pembuatan tidak boleh kosong");
+            toast(getString(R.string.year_cannot_be_empty));
             return false;
         }else if(imageURL.equals("")){
-            toast("ImageURL tidak boleh kosong");
+            toast(getString(R.string.image_url_cannot_be_empty));
         }
         return true;
     }
 
-    //DEBUGING
+    //DEBUGGING
     private void toast(String txt){
         Toast toast = Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG);
         toast.show();
     }
 
-    private int generateID(int start,int end){
+    private int generateID(){
         Random rnd = new Random();
-        int id = rnd.nextInt(end-start)+start;
-        return id;
+        return rnd.nextInt(300 - 200)+ 200;
     }
 }

@@ -1,20 +1,20 @@
 package com.example.carrentalapp.Model;
 
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
 
 @Entity
 public class Customer {
 
 
     @PrimaryKey
-    @NonNull
     private int customerID;
 
     private String firstName;
-    private String middleName = "";
+    private String middleName;
     private String lastName;
 
     private String email;
@@ -60,7 +60,7 @@ public class Customer {
 
     }
 
-    public String toString(){
+    public @NotNull String toString(){
 
         return  "\n"+
                 "CustomerID:        " + customerID + "\n" +

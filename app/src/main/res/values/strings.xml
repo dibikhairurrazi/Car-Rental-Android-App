@@ -122,4 +122,22 @@
     <string name="kategori_kendaraan">Kategori Kendaraan</string>
     <string name="daftar_peminjaman">Daftar Peminjaman</string>
     <string name="akun">Akun</string>
+    <string name="category_cannot_be_empty">Kategori tidak boleh kosong</string>
+    <string name="seat_cannot_be_empty">Jumlah kursi tidak boleh kosong</string>
+    <string name="price_cannot_be_empty">Harga tidak boleh kosong</string>
+    <string name="mileage_cannot_be_empty">Total KM tidak boleh kosong</string>
+    <string name="manufacturer_cannot_be_empty">Pabrikan tidak boleh kosong</string>
+    <string name="model_cannot_be_empty">Model tidak boleh kosong</string>
+    <string name="year_cannot_be_empty">Tahun pembuatan tidak boleh kosong</string>
+    <string name="image_url_cannot_be_empty">ImageURL tidak boleh kosong</string>
+    <string name="category_not_found">\" Ketegori tidak ditemukan\"</string>
+    <string name="form_not_completed">Form Tidak Lengkap</string>
+    <string name="user_not_found">User Tidak Ditemukan</string>
+    <string name="booking_id_label">\"BookingID: \"</string>
+    <string name="order_received_title">Pesanan sudah kami terima</string>
+    <string name="order_received_body">Pembayaran sudah kami terima, silahkan melanjutkan proses peminjaman</string>
+    <string name="paid_text">Dibayar</string>
+    <string name="must_finished_payment_first">Harus selesaikan pembayaran terlebih dahulu</string>
+    <string name="book_this_car_message">Pinjam Mobil Ini</string>
+    <string name="car_not_available_message">Kendaraan Tidak Tersedia</string>
 </resources>

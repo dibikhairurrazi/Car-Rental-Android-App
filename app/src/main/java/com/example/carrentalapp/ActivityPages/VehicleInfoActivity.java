@@ -1,20 +1,18 @@
 package com.example.carrentalapp.ActivityPages;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.room.Room;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.room.Room;
 
 import com.example.carrentalapp.Database.InsuranceDao;
 import com.example.carrentalapp.Database.Project_Database;
@@ -106,31 +104,20 @@ public class VehicleInfoActivity extends AppCompatActivity {
     private void listenHandler() {
 
         //BACK ARROW BUTTON LISTENER
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back.setOnClickListener(v -> finish());
 
         //BOOKING BUTTON -> THIS WILL REDIRECT TO BOOKING PAGE
-        book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent informationPage = new Intent(VehicleInfoActivity.this, BookingCarActivity.class);
-                informationPage.putExtra("INSURANCEID",getInsuranceID(chosenInsurance));
-                informationPage.putExtra("VEHICLEID",vehicle.getVehicleID()+"");
-                startActivity(informationPage);
-            }
+        book.setOnClickListener(v -> {
+            Intent informationPage = new Intent(VehicleInfoActivity.this, BookingCarActivity.class);
+            informationPage.putExtra("INSURANCEID",getInsuranceID(chosenInsurance));
+            informationPage.putExtra("VEHICLEID",vehicle.getVehicleID()+"");
+            startActivity(informationPage);
         });
 
 
-        insuranceOption.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton option = findViewById(checkedId);
-                chosenInsurance = option.getText().toString().toLowerCase();
-            }
+        insuranceOption.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton option = findViewById(checkedId);
+            chosenInsurance = option.getText().toString().toLowerCase();
         });
 
 
@@ -141,6 +128,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
         return insurance.getInsuranceID();
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayVehicleInfo() {
         //SETTING THE TITLE TO VEHICLE NAME
         vehicleTitle.setText(vehicle.fullTitle());
@@ -154,13 +142,13 @@ public class VehicleInfoActivity extends AppCompatActivity {
             notAvailable.setVisibility(ConstraintLayout.INVISIBLE);
             book.setEnabled(true);
             book.setBackground(ContextCompat.getDrawable(VehicleInfoActivity.this,R.drawable.round_button));
-            book.setText("Pinjam Mobil Ini");
+            book.setText(R.string.book_this_car_message);
         }else{
             available.setVisibility(ConstraintLayout.INVISIBLE);
             notAvailable.setVisibility(ConstraintLayout.VISIBLE);
             book.setEnabled(false);
             book.setBackground(ContextCompat.getDrawable(VehicleInfoActivity.this,R.drawable.disable_button));
-            book.setText("Kendaraan Tidak Tersedia");
+            book.setText(R.string.car_not_available_message);
         }
 
         //SET VEHICLE SPECS
@@ -174,11 +162,4 @@ public class VehicleInfoActivity extends AppCompatActivity {
         vehiclePrice.setText(Common.getFormattedPrice(vehicle.getPrice())+"/Hari");
 
     }
-
-    //DEBUGING
-    private void toast(String txt){
-        Toast toast = Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
 }
