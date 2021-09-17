@@ -52,8 +52,13 @@ public class LoginActivity extends AppCompatActivity {
         //IF USER ALREADY LOGGED IN => REDIRECT TO HOME PAGE
         boolean isLoggedIn = Boolean.parseBoolean(Session.read(LoginActivity.this, "isLoggedIn", "false"));
         if(isLoggedIn){
-            Intent homePage = new Intent(LoginActivity.this,UserViewActivity.class);
-            startActivity(homePage);
+            if (Integer.parseInt(Session.read(LoginActivity.this, "customerID", "false")) == 0) {
+                Intent homePage = new Intent(LoginActivity.this,AdminViewActivity.class);
+                startActivity(homePage);
+            } else {
+                Intent homePage = new Intent(LoginActivity.this,UserViewActivity.class);
+                startActivity(homePage);
+            }
         }
 
         initComponents();

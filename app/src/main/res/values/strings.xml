@@ -140,4 +140,5 @@
     <string name="must_finished_payment_first">Harus selesaikan pembayaran terlebih dahulu</string>
     <string name="book_this_car_message">Pinjam Mobil Ini</string>
     <string name="car_not_available_message">Kendaraan Tidak Tersedia</string>
+    <string name="menyetujui">Menyetujui</string>
 </resources>

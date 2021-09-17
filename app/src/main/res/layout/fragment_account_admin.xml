@@ -9,35 +9,59 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFAB00">
+        android:background="@color/colorPrimary">
 
         <Button
             android:id="@+id/add_vehicle_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_width="300dp"
+            android:layout_height="@dimen/buttonSize"
+            android:background="@drawable/round_button"
             android:text="Add Category"
             app:layout_constraintBottom_toTopOf="@+id/add_vehicle_category_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.813" />
+            app:layout_constraintVertical_bias="0.981" />
 
         <Button
             android:id="@+id/add_vehicle_category_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="52dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_width="300dp"
+            android:layout_height="@dimen/buttonSize"
+            android:background="@drawable/round_button"
+            android:layout_marginBottom="48dp"
             android:text="Add Vehicle Category"
-            app:layout_constraintBottom_toTopOf="@+id/logout"
+            app:layout_constraintBottom_toTopOf="@+id/populate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
+            android:id="@+id/populate"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_width="300dp"
+            android:layout_height="@dimen/buttonSize"
+            android:background="@drawable/round_button"
+            android:layout_marginBottom="48dp"
+            android:text="Populate"
+            app:layout_constraintBottom_toTopOf="@+id/logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
             android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="224dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_width="300dp"
+            android:layout_height="@dimen/buttonSize"
+            android:background="@drawable/round_button"
+            android:layout_marginBottom="160dp"
             android:text="@string/logout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

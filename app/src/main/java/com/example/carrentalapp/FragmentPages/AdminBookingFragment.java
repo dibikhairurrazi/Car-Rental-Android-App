@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import com.example.carrentalapp.ActivityPages.ViewBookingActivity;
+import com.example.carrentalapp.ActivityPages.AdminViewBookingActivity;
 import com.example.carrentalapp.Adapter.BookingAdapter;
 import com.example.carrentalapp.Database.BookingDao;
 import com.example.carrentalapp.Database.Project_Database;
@@ -59,7 +59,7 @@ public class AdminBookingFragment extends Fragment implements BookingAdapter.onB
     @Override
     public void onClick(int position) {
         int bookingID = bookings.get(position).getBookingID();
-        Intent viewBooking = new Intent(getContext(), ViewBookingActivity.class);
+        Intent viewBooking = new Intent(getContext(), AdminViewBookingActivity.class);
         viewBooking.putExtra("BOOKINGID",""+bookingID);
         startActivity(viewBooking);
     }

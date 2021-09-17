@@ -3,7 +3,6 @@ package com.example.carrentalapp.ActivityPages;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -23,9 +22,9 @@ import com.example.carrentalapp.R;
 
 import c.e.c.Util.Common;
 
-public class ViewBookingActivity extends AppCompatActivity {
+public class AdminViewBookingActivity extends AppCompatActivity {
 
-    private Button back, returnCar;
+    private Button back, approve;
 
     //DRIVER DETAILS
     private TextView name, email, phoneNumber;
@@ -42,13 +41,12 @@ public class ViewBookingActivity extends AppCompatActivity {
     //VEHICLE
     private Vehicle vehicle;
 
-    private BookingDao bookingDao;
-    private VehicleDao vehicleDao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_booking);
+        setContentView(R.layout.activity_admin_view_booking);
 
         initComponents();
         listenHandler();
@@ -59,7 +57,7 @@ public class ViewBookingActivity extends AppCompatActivity {
 
     private void initComponents() {
         back = findViewById(R.id.back);
-        returnCar = findViewById(R.id.returnCar);
+        approve = findViewById(R.id.approve);
 
         //DRIVER DETAILS
         name = findViewById(R.id.name);
@@ -82,13 +80,13 @@ public class ViewBookingActivity extends AppCompatActivity {
 
         //DATABASE TABLE
         //DATABASE TABLE
-        bookingDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+        BookingDao bookingDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .bookingDao();
         customerDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .customerDao();
-        vehicleDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+        VehicleDao vehicleDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .vehicleDao();
         InsuranceDao insuranceDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
@@ -101,19 +99,15 @@ public class ViewBookingActivity extends AppCompatActivity {
         chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
         vehicle = vehicleDao.findVehicle(booking.getVehicleID());
 
-        if (!booking.getBookingStatus().equals("approved")) {
-            returnCar.setVisibility(View.INVISIBLE);
-        }
-
         bookingID = findViewById(R.id.bookingID);
     }
 
     private void listenHandler() {
         back.setOnClickListener(v -> finish());
 
-        returnCar.setOnClickListener(view -> {
-            returnCar();
-            Intent viewBooking = new Intent(ViewBookingActivity.this, UserViewActivity.class);
+        approve.setOnClickListener(view -> {
+            approveBooking();
+            Intent viewBooking = new Intent(AdminViewBookingActivity.this, AdminViewActivity.class);
             startActivity(viewBooking);
         });
     }
@@ -155,11 +149,12 @@ public class ViewBookingActivity extends AppCompatActivity {
         return (_days*_vehicleRate) + _insuranceRate;
     }
 
-    private void returnCar() {
+    private void approveBooking() {
+        BookingDao bookingDao = Room.databaseBuilder(getApplicationContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+                .build()
+                .bookingDao();
         int _bookingID = Integer.parseInt(getIntent().getStringExtra("BOOKINGID"));
-        bookingDao.updateStatus(_bookingID, "finished");
-        vehicle.setAvailability(true);
-        vehicleDao.update(vehicle);
+        bookingDao.updateStatus(_bookingID, "approved");
     }
 
     public void onBackPressed(){
