@@ -207,7 +207,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="@drawable/vehicle_info_card"
                         android:paddingBottom="10dp">
 
@@ -458,6 +458,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
                         <LinearLayout
+                            android:id="@+id/linearLayout3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -470,9 +471,9 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:baselineAligned="false"
                                 android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:baselineAligned="false">
+                                android:orientation="horizontal">
 
                                 <LinearLayout
                                     android:layout_width="0dp"
@@ -503,6 +504,16 @@
                             </LinearLayout>
 
                         </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/customerPhoto"
+                            android:layout_width="314dp"
+                            android:layout_height="214dp"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                            tools:srcCompat="@tools:sample/avatars" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

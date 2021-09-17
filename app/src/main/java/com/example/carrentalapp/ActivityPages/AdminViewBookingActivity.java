@@ -2,8 +2,11 @@ package com.example.carrentalapp.ActivityPages;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +23,8 @@ import com.example.carrentalapp.Model.Insurance;
 import com.example.carrentalapp.Model.Vehicle;
 import com.example.carrentalapp.R;
 
+import java.io.File;
+
 import c.e.c.Util.Common;
 
 public class AdminViewBookingActivity extends AppCompatActivity {
@@ -28,6 +33,8 @@ public class AdminViewBookingActivity extends AppCompatActivity {
 
     //DRIVER DETAILS
     private TextView name, email, phoneNumber;
+
+    private ImageView customerPhoto;
 
     //BOOKING SUMMARY
     private TextView bookingID, vehicleName, rate, totalDays, _pickup, _return, insurance, insuranceRate, totalCost;
@@ -63,6 +70,8 @@ public class AdminViewBookingActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         phoneNumber = findViewById(R.id.phoneNumber);
+
+        customerPhoto = findViewById(R.id.customerPhoto);
 
         //BOOKING SUMMARY
         vehicleName = findViewById(R.id.vehicleName);
@@ -119,6 +128,13 @@ public class AdminViewBookingActivity extends AppCompatActivity {
         name.setText(customer.getFullName());
         email.setText(customer.getEmail());
         phoneNumber.setText(customer.getPhoneNumber());
+
+        File imgFile = new File(customer.getImagePath());
+
+        if(imgFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            customerPhoto.setImageBitmap(myBitmap);
+        }
 
         bookingID.setText("BookingID: " + booking.getBookingID());
     }

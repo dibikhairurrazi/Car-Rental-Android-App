@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 @Entity
 public class Customer {
 
-
     @PrimaryKey
     private int customerID;
 
@@ -32,6 +31,8 @@ public class Customer {
     private String password;
 
     private String title; //MR or MS
+
+    private String imagePath;
 
     public Customer(int customerID,
                     String firstName,  String middleName,      String lastName,
@@ -193,5 +194,13 @@ public class Customer {
 
     public String getFullName(){
         return title + ". " + firstName + " " + lastName;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

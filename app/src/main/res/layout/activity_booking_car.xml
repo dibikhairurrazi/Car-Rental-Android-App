@@ -366,7 +366,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="357dp"
+                        android:layout_height="301dp"
                         android:background="@drawable/vehicle_info_card"
                         android:paddingBottom="10dp">
 
