@@ -1,6 +1,7 @@
 package com.example.carrentalapp.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,11 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingH
         bookingHolder.pickupDate.setText(_booking.getPickupTime());
         bookingHolder.returnDate.setText(_booking.getReturnTime());
         bookingHolder.bookingStatus.setText(_booking.getBookingStatus());
+        if (_booking.getBookingStatus().equals("approved")) {
+            bookingHolder.bookingStatus.setTextColor(Color.parseColor("#2fff00"));
+        } else if (_booking.getBookingStatus().equals("finished")) {
+            bookingHolder.bookingStatus.setTextColor(Color.parseColor("#000000"));
+        }
     }
 
     @Override

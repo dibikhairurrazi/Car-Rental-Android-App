@@ -1,20 +1,19 @@
 package com.example.carrentalapp.Model;
 
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
 
 @Entity
 public class Customer {
 
-
     @PrimaryKey
-    @NonNull
     private int customerID;
 
     private String firstName;
-    private String middleName = "";
+    private String middleName;
     private String lastName;
 
     private String email;
@@ -32,6 +31,8 @@ public class Customer {
     private String password;
 
     private String title; //MR or MS
+
+    private String imagePath;
 
     public Customer(int customerID,
                     String firstName,  String middleName,      String lastName,
@@ -60,7 +61,7 @@ public class Customer {
 
     }
 
-    public String toString(){
+    public @NotNull String toString(){
 
         return  "\n"+
                 "CustomerID:        " + customerID + "\n" +
@@ -193,5 +194,13 @@ public class Customer {
 
     public String getFullName(){
         return title + ". " + firstName + " " + lastName;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

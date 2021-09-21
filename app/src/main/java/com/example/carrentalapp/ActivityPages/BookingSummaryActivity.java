@@ -1,5 +1,6 @@
 package com.example.carrentalapp.ActivityPages;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -36,14 +37,13 @@ import com.example.carrentalapp.R;
 import com.github.ybq.android.spinkit.style.Wave;
 import com.squareup.picasso.Picasso;
 
-import java.time.temporal.ChronoUnit;
+import org.apache.commons.text.WordUtils;
+
 import java.util.Calendar;
 import java.util.Random;
 
 import c.e.c.Util.Common;
 import c.e.c.Util.SendMail;
-
-import org.apache.commons.text.WordUtils;
 
 public class BookingSummaryActivity extends AppCompatActivity {
 
@@ -148,62 +148,49 @@ public class BookingSummaryActivity extends AppCompatActivity {
         paidLoading.setVisibility(View.INVISIBLE);
     }
 
+    @SuppressLint("SetTextI18n")
     private void listenHandler() {
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        back.setOnClickListener(v -> finish());
+
+        book.setOnClickListener(v -> {
+
+            if(!book.isEnabled()){
+                toast(getString(R.string.must_finished_payment_first));
+                return;
             }
+            generateBilling_Payment();
+
+            chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
+            vehicle = vehicleDao.findVehicle(booking.getVehicleID());
+
+            Customer customer = customerDao.findUser(booking.getCustomerID());
+
+            Log.d("SEND_MESSAGE", "start sending message");
+
+            SendMail sm = new SendMail(customer.getEmail(), "Booking Summary #" + booking.getBookingID(),  getEmailString(customer, vehicle, chosenInsurance));
+            sm.execute();
+
+            Log.d("SEND_MESSAGE", "finished sending message");
+
+            Intent bookingCompletePage = new Intent(BookingSummaryActivity.this,BookingCompleteActivity.class);
+            bookingCompletePage.putExtra("BOOKING",booking);
+            startActivity(bookingCompletePage);
         });
 
-        book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        payNow.setOnClickListener(v -> {
+            String title=getString(R.string.order_received_title);
+            String body=getString(R.string.order_received_body);
 
-                if(!book.isEnabled()){
-                    toast("Harus selesaikan pembayaran terlebih dahulu");
-                    return;
-                }
-                generateBilling_Payment();
+            showNotification(title, body);
 
-                chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
-                vehicle = vehicleDao.findVehicle(booking.getVehicleID());
+            paidLoading.setVisibility(View.VISIBLE);
 
-                Customer customer = customerDao.findUser(booking.getCustomerID());
-
-                Log.d("SEND_MESSAGE", "start sending message");
-
-                SendMail sm = new SendMail(customer.getEmail(), "Booking Summary #" + booking.getBookingID(),  getEmailString(customer, vehicle, chosenInsurance));
-                sm.execute();
-
-                Log.d("SEND_MESSAGE", "finished sending message");
-
-                Intent bookingCompletePage = new Intent(BookingSummaryActivity.this,BookingCompleteActivity.class);
-                bookingCompletePage.putExtra("BOOKING",booking);
-                startActivity(bookingCompletePage);
-            }
-        });
-
-        payNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title="Pesanan sudah kami terima";
-                String body="Pembayaran sudah kami terima, silahkan melanjutkan proses peminjaman";
-
-                showNotification(title, body);
-
-                paidLoading.setVisibility(View.VISIBLE);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        paidLoading.setVisibility(View.INVISIBLE);
-                        payNow.setText("Dibayar");
-                        payNow.setEnabled(false);
-                        book.setEnabled(true);
-                    }
-                },7000);
-            }
+            new Handler().postDelayed(() -> {
+                paidLoading.setVisibility(View.INVISIBLE);
+                payNow.setText(R.string.paid_text);
+                payNow.setEnabled(false);
+                book.setEnabled(true);
+            },7000);
         });
     }
 
@@ -215,7 +202,7 @@ public class BookingSummaryActivity extends AppCompatActivity {
             paymentID=generateID(600,699);
         }
 
-        //GENRATE BILLING ID
+        //GENERATE BILLING ID
         int billingID = generateID(500,599);
         while(billingDao.exist(billingID)){
             billingID=generateID(500,599);
@@ -244,6 +231,7 @@ public class BookingSummaryActivity extends AppCompatActivity {
         phoneNumber.setText(customer.getPhoneNumber());
     }
 
+    @SuppressLint("SetTextI18n")
     private void displaySummary(){
 
         vehicleName.setText(vehicle.fullTitle());
@@ -275,11 +263,10 @@ public class BookingSummaryActivity extends AppCompatActivity {
     private int generateID(int start, int end){
         Random rnd = new Random();
         int bound = end%100;
-        int id = rnd.nextInt(bound)+start;
-        return id;
+        return rnd.nextInt(bound)+start;
     }
 
-    //DEBUGING
+    //DEBUGGING
     private void toast(String txt){
         Toast toast = Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_SHORT);
         toast.show();

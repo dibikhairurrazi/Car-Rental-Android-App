@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.carrentalapp.Model.Booking;
 
@@ -32,6 +33,12 @@ public interface BookingDao {
 
     @Insert
     void insert(Booking booking);
+
+    @Update
+    void update(Booking booking);
+
+    @Query("UPDATE booking SET bookingStatus = :status WHERE bookingID = :bookingID")
+    void updateStatus(int bookingID, String status);
 
 }
 

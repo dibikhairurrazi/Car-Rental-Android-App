@@ -1,23 +1,34 @@
 package com.example.carrentalapp.ActivityPages;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.room.Room;
 
+import com.example.carrentalapp.BuildConfig;
 import com.example.carrentalapp.Database.CustomerDao;
 import com.example.carrentalapp.Database.Project_Database;
-import com.example.carrentalapp.Model.*;
+import com.example.carrentalapp.Model.Customer;
 import com.example.carrentalapp.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import c.e.c.Util.SimpleSHA1;
@@ -25,12 +36,19 @@ import c.e.c.Util.SimpleSHA1;
 
 public class RegistrationActivity extends AppCompatActivity{
 
-    private Button register;
+    private Button register, takePicture;
     private TextView login;
 
     private TextView expiryDate;
     private TextView dob;
     private CustomerDao customerDao;
+
+    private String currentPhotoPath;
+    private ImageView photoView;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int PERMISSION_CODE = 1000;
+    // private static final int IMAGE_CAPTURE_CODE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,52 +78,53 @@ public class RegistrationActivity extends AppCompatActivity{
                 .build()
                 .customerDao();
 
+        photoView = findViewById(R.id.photoView);
+        takePicture = findViewById(R.id.take_picture_button);
+
     }
 
     //This method handles all the click events
     private void clickListenHandler(){
 
         //Expiry Date Listener
-        expiryDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCalendar(expiryDate);
-            }
-        });
+        expiryDate.setOnClickListener(v -> openCalendar(expiryDate));
 
         //Date of Birth Listener
-        dob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCalendar(dob);
-            }
-        });
+        dob.setOnClickListener(v -> openCalendar(dob));
 
         //Login Listener
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent registerPage = new Intent(RegistrationActivity.this,LoginActivity.class);
-                startActivity(registerPage);
-            }
+        login.setOnClickListener(v -> {
+            Intent registerPage = new Intent(RegistrationActivity.this,LoginActivity.class);
+            startActivity(registerPage);
         });
 
         //Register Listener
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Customer customer = createCustomerObject();
+        register.setOnClickListener(v -> {
+            Customer customer = createCustomerObject();
+            customer.setImagePath(currentPhotoPath);
 
-                if(customerDao != null) {
-                    //If customer object is null -> Incomplete form
-                    //If customer object not null -> Complete form
-                    if(customer != null) {
-                        customerDao.insert(customer); //Insert the customer object into database
-                        toast("Registration Successful");
-                        finish();
-                    }
+            if(customerDao != null) {
+                //If customer object is null -> Incomplete form
+                //If customer object not null -> Complete form
+                if(customer != null) {
+                    customerDao.insert(customer); //Insert the customer object into database
+                    toast("Registration Successful");
+                    finish();
                 }
             }
+        });
+
+        takePicture.setOnClickListener(v -> {
+            if (checkSelfPermission(Manifest.permission.CAMERA) ==
+                    PackageManager.PERMISSION_DENIED ||
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                            PackageManager.PERMISSION_DENIED){
+                //permission not enabled, request it
+                String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                //show popup to request permissions
+                requestPermissions(permission, PERMISSION_CODE);
+            }
+            dispatchTakePictureIntent();
         });
     }
 
@@ -113,12 +132,9 @@ public class RegistrationActivity extends AppCompatActivity{
     private void openCalendar(final TextView dateFieldButton) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
 
-        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = year + "-" + month + "-" + dayOfMonth;
-                dateFieldButton.setText(date);
-            }
+        datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            String date = year + "-" + month + "-" + dayOfMonth;
+            dateFieldButton.setText(date);
         });
 
         datePickerDialog.show();
@@ -196,12 +212,57 @@ public class RegistrationActivity extends AppCompatActivity{
 
     private int generateID(){
         Random rnd = new Random();
-        int id = 202000 + rnd.nextInt(65)+10;
-        return id;
+        return 202000 + rnd.nextInt(65)+10;
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                toast("error creating file");
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        BuildConfig.APPLICATION_ID + ".provider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Bundle extras = data.getExtras();
+            // Bitmap imageBitmap = (Bitmap) extras.get("data");
+            // photoView.setImageBitmap(imageBitmap);
+        }
+    }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        toast(image.getAbsolutePath());
+        return image;
+    }
 
 }

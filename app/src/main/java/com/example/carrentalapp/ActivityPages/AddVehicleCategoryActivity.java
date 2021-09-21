@@ -1,18 +1,16 @@
 package com.example.carrentalapp.ActivityPages;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.example.carrentalapp.Database.Project_Database;
 import com.example.carrentalapp.Database.VehicleCategoryDao;
@@ -72,49 +70,32 @@ public class AddVehicleCategoryActivity extends AppCompatActivity {
     }
 
     public void listenHandler(){
-        colorDisplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openColorDialog();
+        colorDisplay.setOnClickListener(v -> openColorDialog());
+
+        add.setOnClickListener(v -> {
+            VehicleCategory vehicleCategory = createVehicleCategory();
+
+            if(vehicleCategory != null){
+                vehicleCategoryDao.insert(vehicleCategory);
+                Log.d("MainActivity",vehicleCategory.getObject());
+                toast("Vehicle Category Added");
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VehicleCategory vehicleCategory = createVehicleCategory();
-
-                if(vehicleCategory != null){
-                    vehicleCategoryDao.insert(vehicleCategory);
-                    Log.d("MainActivity",vehicleCategory.getObject());
-                    toast("Vehicle Category Added");
-                }
-            }
+        reset.setOnClickListener(v -> {
+            vehicleCategoryDao.deleteAll();
+            vehicleDao.deleteAll();
+            toast("RESET");
         });
 
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vehicleCategoryDao.deleteAll();
-                vehicleDao.deleteAll();
-                toast("RESET");
-            }
+        addVehicle.setOnClickListener(v -> {
+            Intent addVehiclePage = new Intent(AddVehicleCategoryActivity.this,AddVehicleActivity.class);
+            startActivity(addVehiclePage);
         });
 
-        addVehicle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addVehiclePage = new Intent(AddVehicleCategoryActivity.this,AddVehicleActivity.class);
-                startActivity(addVehiclePage);
-            }
-        });
-
-        loadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!imageURL.getText().toString().equals("")){
-                    Picasso.get().load(imageURL.getText().toString()).into(viewImage);
-                }
+        loadImage.setOnClickListener(v -> {
+            if(!imageURL.getText().toString().equals("")){
+                Picasso.get().load(imageURL.getText().toString()).into(viewImage);
             }
         });
 
@@ -132,15 +113,15 @@ public class AddVehicleCategoryActivity extends AppCompatActivity {
         String category_ID = categoryID.getText().toString();
         String image_URL = imageURL.getText().toString();
 
-        if(!category_ID.equals("") && !vehicleCategoryDao.exists(Integer.valueOf(category_ID)) && !vehicleCategoryDao.exits(categoryName)) {
-            return new VehicleCategory(categoryName,Integer.valueOf(category_ID),colorCode,image_URL);
+        if(!category_ID.equals("") && !vehicleCategoryDao.exists(Integer.parseInt(category_ID)) && !vehicleCategoryDao.exits(categoryName)) {
+            return new VehicleCategory(categoryName,Integer.parseInt(category_ID),colorCode,image_URL);
         }
 
         if(category_ID.equals(""))
             toast("CategoryID is blank");
         else if(categoryName.equals(""))
             toast("Category name is blank");
-        else if(vehicleCategoryDao.exists(Integer.valueOf(category_ID)))
+        else if(vehicleCategoryDao.exists(Integer.parseInt(category_ID)))
             toast("CategoryID already exists");
         else if(image_URL.equals(""))
             toast("Please enter image URL");
@@ -166,7 +147,7 @@ public class AddVehicleCategoryActivity extends AppCompatActivity {
         ambilWarnaDialog.show();
     }
 
-    //DEBUGING
+    //DEBUGGING
     private void toast(String txt){
         Toast toast = Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_LONG);
         toast.show();

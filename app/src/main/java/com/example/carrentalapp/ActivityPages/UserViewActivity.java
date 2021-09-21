@@ -1,16 +1,11 @@
 package com.example.carrentalapp.ActivityPages;
 
-import androidx.annotation.NonNull;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.example.carrentalapp.FragmentPages.AccountFragment;
 import com.example.carrentalapp.FragmentPages.BookingFragment;
@@ -21,7 +16,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class UserViewActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private FrameLayout frameLayout;
 
     private VehicleCategoryFragment vehicleCategoryFragment;
     private BookingFragment bookingFragment;
@@ -41,28 +35,26 @@ public class UserViewActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void clickListener() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
 
-                switch (menuItem.getItemId()){
+            switch (menuItem.getItemId()){
 
-                    case R.id.nav_vehicle:
-                        setFragment(vehicleCategoryFragment);
-                        return true;
+                case R.id.nav_vehicle:
+                    setFragment(vehicleCategoryFragment);
+                    return true;
 
-                    case R.id.nav_booking:
-                        setFragment(bookingFragment, loggedInCustomerID);
-                        return true;
+                case R.id.nav_booking:
+                    setFragment(bookingFragment, loggedInCustomerID);
+                    return true;
 
-                    case R.id.nav_account :
-                        setFragment(accountFragment, loggedInCustomerID);
-                        return true;
-                }
-
-                return false;
+                case R.id.nav_account :
+                    setFragment(accountFragment, loggedInCustomerID);
+                    return true;
             }
+
+            return false;
         });
     }
 
@@ -83,7 +75,7 @@ public class UserViewActivity extends AppCompatActivity {
 
     private void initComponents(){
         bottomNavigationView = findViewById(R.id.bottom_nav);
-        frameLayout = findViewById(R.id.framelayout);
+        findViewById(R.id.framelayout);
 
         vehicleCategoryFragment = new VehicleCategoryFragment();
         bookingFragment= new BookingFragment();

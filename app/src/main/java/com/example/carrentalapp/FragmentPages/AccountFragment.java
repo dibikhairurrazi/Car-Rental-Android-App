@@ -39,14 +39,11 @@ public class AccountFragment extends Fragment {
 
     private void listenHandler() {
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Session.close(getContext());
-                Intent loginPage = new Intent(getActivity(), LoginActivity.class);
-                loginPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(loginPage);
-            }
+        logout.setOnClickListener(v -> {
+            Session.close(getContext());
+            Intent loginPage = new Intent(getActivity(), LoginActivity.class);
+            loginPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(loginPage);
         });
 
     }

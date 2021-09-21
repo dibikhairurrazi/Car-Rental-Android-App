@@ -1,14 +1,14 @@
 package com.example.carrentalapp.Model;
 
-import android.util.Log;
-import android.widget.Toast;
+import android.annotation.SuppressLint;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
 @Entity(primaryKeys = {"bookingID","customerID"})
@@ -81,8 +81,8 @@ public class Booking implements Serializable {
         this.bookingLocation = location;
     }
 
-    public String toString(){
-        SimpleDateFormat format = new SimpleDateFormat("MMMM, d yyyy hh:mm a");
+    public @NotNull String toString(){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("MMMM, d yyyy hh:mm a");
         return  "\n" +
                 "BookingID:         " + bookingID + "\n" +
                 "Pickup Date:       " + format.format(pickupDate.getTime()) + "\n" +
@@ -167,12 +167,12 @@ public class Booking implements Serializable {
     }
 
     public String getPickupTime(){
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm a MMMM, d yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("hh:mm a MMMM, d yyyy");
         return format.format(pickupDate.getTime());
     }
 
     public String getReturnTime(){
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm a MMMM, d yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("hh:mm a MMMM, d yyyy");
         return format.format(returnDate.getTime());
     }
 

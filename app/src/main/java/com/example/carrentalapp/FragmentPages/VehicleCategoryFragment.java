@@ -2,6 +2,10 @@ package com.example.carrentalapp.FragmentPages;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,16 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
-
 import com.example.carrentalapp.Adapter.VehicleCategoryAdapter;
 import com.example.carrentalapp.Database.Project_Database;
 import com.example.carrentalapp.Database.VehicleCategoryDao;
-import com.example.carrentalapp.FragmentPages.VehicleFragment;
 import com.example.carrentalapp.Model.VehicleCategory;
 import com.example.carrentalapp.R;
 
@@ -28,14 +25,8 @@ import java.util.ArrayList;
 
 public class VehicleCategoryFragment extends Fragment implements VehicleCategoryAdapter.onCategoryListener {
 
-    private VehicleCategoryDao vehicleCategoryDao;
-
-    private RecyclerView recyclerView;
-    private VehicleCategoryAdapter adapter;
-
-    private Button home;
-
     private ArrayList<VehicleCategory> list;
+    // private Button home;
 
     public VehicleCategoryFragment() {
         // Required empty public constructor
@@ -55,33 +46,24 @@ public class VehicleCategoryFragment extends Fragment implements VehicleCategory
 
     private void initComponents(View view) {
 
-        vehicleCategoryDao = Room.databaseBuilder(getContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
+        VehicleCategoryDao vehicleCategoryDao = Room.databaseBuilder(getContext(), Project_Database.class, "car_rental_db").allowMainThreadQueries()
                 .build()
                 .vehicleCategoryDao();
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         list = (ArrayList<VehicleCategory>) vehicleCategoryDao.getAllCategory();
-        adapter = new VehicleCategoryAdapter(getContext(), list,this);
+        VehicleCategoryAdapter adapter = new VehicleCategoryAdapter(getContext(), list, this);
         recyclerView.setAdapter(adapter);
     }
 
     private void listenHandler() {
 
-//        home.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent homePage = new Intent(HomePageActivity.this, LoginActivity.class);
-//                startActivity(homePage);
-//            }
-//        });
-
-
     }
 
-    //DEBUGING
+    //DEBUGGING
     private void toast(String txt) {
         Toast toast = Toast.makeText(getContext(), txt, Toast.LENGTH_SHORT);
         toast.show();
