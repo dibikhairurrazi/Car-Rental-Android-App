@@ -37,7 +37,7 @@ import c.e.c.Util.SimpleSHA1;
 public class RegistrationActivity extends AppCompatActivity{
 
     private Button register;
-    private Button takePicture;
+    // private Button takePicture;
     private TextView login;
 
     private TextView expiryDate;
@@ -45,7 +45,7 @@ public class RegistrationActivity extends AppCompatActivity{
     private CustomerDao customerDao;
 
     private String currentPhotoPath;
-    private ImageView photoView;
+    // private ImageView photoView;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PERMISSION_CODE = 1000;
@@ -79,7 +79,7 @@ public class RegistrationActivity extends AppCompatActivity{
                 .build()
                 .customerDao();
 
-        photoView = findViewById(R.id.photoView);
+        // photoView = findViewById(R.id.photoView);
         // takePicture = findViewById(R.id.take_picture_button);
 
     }

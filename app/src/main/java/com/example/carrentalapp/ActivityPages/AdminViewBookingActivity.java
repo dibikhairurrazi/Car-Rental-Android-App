@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.example.carrentalapp.Model.Customer;
 import com.example.carrentalapp.Model.Insurance;
 import com.example.carrentalapp.Model.Vehicle;
 import com.example.carrentalapp.R;
+import com.example.carrentalapp.Session.Session;
 
 import java.io.File;
 
@@ -109,6 +111,10 @@ public class AdminViewBookingActivity extends AppCompatActivity {
         vehicle = vehicleDao.findVehicle(booking.getVehicleID());
 
         bookingID = findViewById(R.id.bookingID);
+
+        if (booking.getBookingStatus().equals("approved") || booking.getBookingStatus().equals("finished")) {
+            approve.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void listenHandler() {
@@ -174,8 +180,7 @@ public class AdminViewBookingActivity extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-        super.onBackPressed();
-        Intent homepage = new Intent(getApplicationContext(), UserViewActivity.class);
+        Intent homepage = new Intent(getApplicationContext(), AdminViewActivity.class);
         homepage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Will clear out your activity history stack till now
         startActivity(homepage);
     }
