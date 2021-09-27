@@ -34,7 +34,7 @@ public class AdminViewBookingActivity extends AppCompatActivity {
     //DRIVER DETAILS
     private TextView name, email, phoneNumber;
 
-    private ImageView customerPhoto;
+    // private ImageView customerPhoto;
 
     //BOOKING SUMMARY
     private TextView bookingID, vehicleName, rate, totalDays, _pickup, _return, insurance, insuranceRate, totalCost;
@@ -71,7 +71,7 @@ public class AdminViewBookingActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         phoneNumber = findViewById(R.id.phoneNumber);
 
-        customerPhoto = findViewById(R.id.customerPhoto);
+        // customerPhoto = findViewById(R.id.customerPhoto);
 
         //BOOKING SUMMARY
         vehicleName = findViewById(R.id.vehicleName);
@@ -129,12 +129,12 @@ public class AdminViewBookingActivity extends AppCompatActivity {
         email.setText(customer.getEmail());
         phoneNumber.setText(customer.getPhoneNumber());
 
-        File imgFile = new File(customer.getImagePath());
+        /* File imgFile = new File(customer.getImagePath());
 
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             customerPhoto.setImageBitmap(myBitmap);
-        }
+        } */
 
         bookingID.setText("BookingID: " + booking.getBookingID());
     }
