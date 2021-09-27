@@ -36,7 +36,8 @@ import c.e.c.Util.SimpleSHA1;
 
 public class RegistrationActivity extends AppCompatActivity{
 
-    private Button register, takePicture;
+    private Button register;
+    private Button takePicture;
     private TextView login;
 
     private TextView expiryDate;
@@ -79,7 +80,7 @@ public class RegistrationActivity extends AppCompatActivity{
                 .customerDao();
 
         photoView = findViewById(R.id.photoView);
-        takePicture = findViewById(R.id.take_picture_button);
+        // takePicture = findViewById(R.id.take_picture_button);
 
     }
 
@@ -114,7 +115,7 @@ public class RegistrationActivity extends AppCompatActivity{
             }
         });
 
-        takePicture.setOnClickListener(v -> {
+        /* takePicture.setOnClickListener(v -> {
             if (checkSelfPermission(Manifest.permission.CAMERA) ==
                     PackageManager.PERMISSION_DENIED ||
                     checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
@@ -125,7 +126,7 @@ public class RegistrationActivity extends AppCompatActivity{
                 requestPermissions(permission, PERMISSION_CODE);
             }
             dispatchTakePictureIntent();
-        });
+        }); */
     }
 
     //Opening a Calendar Dialog

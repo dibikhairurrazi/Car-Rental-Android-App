@@ -505,16 +505,6 @@
 
                         </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/customerPhoto"
-                            android:layout_width="314dp"
-                            android:layout_height="214dp"
-                            android:layout_marginTop="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-                            tools:srcCompat="@tools:sample/avatars" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>

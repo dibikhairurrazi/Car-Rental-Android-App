@@ -163,14 +163,11 @@ public class BookingSummaryActivity extends AppCompatActivity {
             chosenInsurance = insuranceDao.findInsurance(booking.getInsuranceID());
             vehicle = vehicleDao.findVehicle(booking.getVehicleID());
 
-            Customer customer = customerDao.findUser(booking.getCustomerID());
-
-            Log.d("SEND_MESSAGE", "start sending message");
+            /* Customer customer = customerDao.findUser(booking.getCustomerID());
 
             SendMail sm = new SendMail(customer.getEmail(), "Booking Summary #" + booking.getBookingID(),  getEmailString(customer, vehicle, chosenInsurance));
-            sm.execute();
+            sm.execute(); */
 
-            Log.d("SEND_MESSAGE", "finished sending message");
 
             Intent bookingCompletePage = new Intent(BookingSummaryActivity.this,BookingCompleteActivity.class);
             bookingCompletePage.putExtra("BOOKING",booking);
@@ -178,10 +175,10 @@ public class BookingSummaryActivity extends AppCompatActivity {
         });
 
         payNow.setOnClickListener(v -> {
-            String title=getString(R.string.order_received_title);
+            /* String title=getString(R.string.order_received_title);
             String body=getString(R.string.order_received_body);
 
-            showNotification(title, body);
+            showNotification(title, body); */
 
             paidLoading.setVisibility(View.VISIBLE);
 
